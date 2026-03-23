@@ -53,6 +53,7 @@ public class MainController {
             contactDAO.deleteContact(selectedContact);
             syncContacts();
         }
+
     }
 
     @FXML
@@ -100,6 +101,7 @@ public class MainController {
     }
 
     private void syncContacts(){
+        Contact currentContact = contactsListView.getSelectionModel().getSelectedItem();
         contactsListView.getItems().clear();
         List<Contact> contacts = contactDAO.getAllContacts();
         boolean hasContact = !contacts.isEmpty();
@@ -107,6 +109,9 @@ public class MainController {
             contactsListView.getItems().addAll(contacts);
         }
         contactContainer.setVisible(hasContact);
+        Contact nextContact = contacts.contains(currentContact) ? currentContact : contacts.get(0);
+        contactsListView.getSelectionModel().select(nextContact);
+        selectContact(nextContact);
     }
 
     @FXML
